@@ -21,7 +21,6 @@ const EmployeeList = () => {
     }
 
     useEffect(() => {
-        console.log("RENDERING LIST");
         appService.setPageTitle('Employee List');
         employeeService.selectEmployee(null);
         employeeService.getEmployees();

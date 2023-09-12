@@ -1,7 +1,7 @@
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const TopNavMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

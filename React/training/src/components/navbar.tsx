@@ -1,6 +1,5 @@
 import {AppBar, Toolbar, Typography} from "@mui/material";
 import TopNavMenu from "./menu";
-import React from "react";
 import {useObservable} from "rxjs-hooks";
 import {appService} from "../services/app.service";
 

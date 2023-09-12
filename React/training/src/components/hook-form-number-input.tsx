@@ -10,8 +10,7 @@ export const HookFormNumberInput = ({ name, control, label, fullWidth }: HookFor
             control={control}
             render={({
                          field: { onChange, value },
-                         fieldState: { error },
-                         formState,
+                         fieldState: { error }
                      }) => (
                 <div>
                     <TextField

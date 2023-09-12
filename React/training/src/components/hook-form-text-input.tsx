@@ -3,15 +3,14 @@ import TextField from "@mui/material/TextField";
 import {HookFormProps} from "../features/employees/types";
 import WarningIcon from '@mui/icons-material/Warning';
 
-export const HookFormTextInput = ({ name, control, label, fullWidth }: HookFormProps) => {
+export const HookFormTextInput = ({ name, control, label, fullWidth, inputProps = {} }: HookFormProps) => {
     return (
         <Controller
             name={name}
             control={control}
             render={({
                          field: { onChange, value },
-                         fieldState: { error },
-                         formState,
+                         fieldState: { error }
                      }) => (
                 <div>
                     <TextField
@@ -19,6 +18,7 @@ export const HookFormTextInput = ({ name, control, label, fullWidth }: HookFormP
                         value={value}
                         label={label}
                         fullWidth={fullWidth}
+                        inputProps={inputProps}
                     />       
                     {!!error?.message ? 
                         (<div className='flex-row error-div'><WarningIcon/><div className={'error-message'}>{error?.message}</div></div>)

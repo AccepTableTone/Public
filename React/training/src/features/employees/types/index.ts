@@ -20,4 +20,5 @@ export interface HookFormProps {
     control: any;
     label: string;
     fullWidth: boolean;
+    inputProps?: any;
 }

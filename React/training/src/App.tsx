@@ -14,9 +14,6 @@ import {appService} from "./services/app.service";
 
 const App = () => {
     const isLoading = useObservable(() => appService.isLoading$, false)
-     useEffect(() => {
-         console.log("RENDERING APP")
-     },[]);
 
     return (
     <div className="App">

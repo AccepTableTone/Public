@@ -13,10 +13,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddEditActions from "../add-edit-actions";
 
 const HookForm = () => {
-    const params = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
-
-    let employeeId = null;
 
     const {reset, handleSubmit, control} = useForm<Employee>({
         defaultValues: helperService.getBlankEmployee(),
@@ -25,16 +23,14 @@ const HookForm = () => {
     const { fields, append, remove} = useFieldArray({control, name: "addresses"});
 
     useEffect(() => {
-        const isEditing = !!params.id;
+        const isEditing = !!id;
         if(isEditing){
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            employeeId = parseInt(params.id || '0', 10);
-            populateForm(employeeId);
+            populateForm(parseInt(id || '0', 10));
         }else{
             reset(helperService.getBlankEmployee());
         }
         appService.setPageTitle(`${isEditing ? 'Edit ' : 'Add'} React Hook Form`);
-    },[]);
+    },[id]);
 
     const populateForm = (employeeId: number) => {
         employeeService.getEmployee(employeeId).subscribe(employee => {
@@ -44,7 +40,7 @@ const HookForm = () => {
     }
     const submitForm = (values:Employee) => {
         values.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === '' ? 0 : address.apartmentNumber);
-        if(!!params.id){
+        if(!id){
             helperService.updateEmployee(values, navigate);
         }else{
             helperService.addEmployee(values, navigate);
@@ -151,6 +147,7 @@ const HookForm = () => {
                                         name={`addresses[${index}].postalCode`}
                                         control={control}
                                         fullWidth={false}
+                                        inputProps={{ style: { textTransform: "uppercase" } }}
                                     />
                                 </div>
                                 <div>
