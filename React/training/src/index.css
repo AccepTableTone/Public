@@ -40,6 +40,10 @@ html, body {
     margin-right:10px;
 }
 
+.margin-bottom-20{
+    margin-bottom:20px;
+}
+
 .flex-row{
     display:flex;
     flex-direction: row;
@@ -51,3 +55,16 @@ html, body {
     flex-grow:1;
 }
 
+.error-div{
+    padding-top:4px;
+    padding-left:10px;
+    font-size:12px;
+    color:#d13031;
+    margin-bottom:0;
+}
+
+.error-message{
+    position:relative;
+    top:4px;
+    left:-7px;
+}

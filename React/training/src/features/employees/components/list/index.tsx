@@ -14,6 +14,7 @@ const EmployeeList = () => {
         employeeService.deleteEmployee(selectedEmployee.id).subscribe(successful => {
             if(successful){
                 toastService.success("Employee successfully deleted.");
+                employeeService.selectEmployee(null);
                 employeeService.getEmployees();
             }
         })

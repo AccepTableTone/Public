@@ -12,6 +12,8 @@ axios.interceptors.response.use(
     function(error){
             if(error.response.status === AppConstants.HttpStatus.NotFound ){
                 toastService.error('The requested record could not be found.');
+            } else if(error.response.status === AppConstants.HttpStatus.BadRequest){
+                toastService.error(`There was an error with your submission. ${error?.response?.data.title} ${JSON.stringify(error?.response?.data.errors)}`);
             }else {
                 toastService.error(`There was an unexpected error. ${error?.response?.data}`);
             }

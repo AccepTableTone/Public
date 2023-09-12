@@ -57,7 +57,7 @@ class EmployeeService {
     /** NOTE: update existing employee */
     updateEmployee = (existingEmployee: Employee) => {
         this.loading();
-        return axios.put(this.API_URL, existingEmployee).pipe(
+        return axios.put(`${this.API_URL}/${existingEmployee.id}`, existingEmployee).pipe(
             switchMap(axiosResponse => {
                 console.log("UPDATE EMPLOYEE: ", axiosResponse);
                 return this.wasSuccessful(axiosResponse);
@@ -79,7 +79,7 @@ class EmployeeService {
     /** NOTE: was http request successful */
     private wasSuccessful = (axiosResponse: AxiosResponse) => {
         this.doneLoading();
-        return of(axiosResponse.status === AppConstants.HttpStatus.Success);
+        return of(axiosResponse.status === AppConstants.HttpStatus.Success || axiosResponse.status === AppConstants.HttpStatus.Created);
     }
     private loading = () => {
         appService.setIsLoading(true);

@@ -1,16 +1,23 @@
 export interface Employee {
-    id: number | undefined;
+    id: number | null;
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string;
-    addresses?: Address[];
+    addresses: Address[];
 }
 
 export interface Address {
-    streetName:string;
+    streetName: string;
     postalCode: string;
-    apartmentNumber: number | undefined;
+    apartmentNumber?: number | string | null | undefined;
     state: string;
     country: string;
+}
+
+export interface HookFormProps {
+    name: string;
+    control: any;
+    label: string;
+    fullWidth: boolean;
 }
