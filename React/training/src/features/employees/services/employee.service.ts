@@ -24,9 +24,9 @@ class EmployeeService {
     /** NOTE: get employee list */
     getEmployees = (): void => {
         this.loading();
-        axios.get<Employee[]>(this.API_URL).subscribe((axiosResponse) => {
+        axios.get<Employee[]>(this.API_URL).subscribe((response) => {
             this.doneLoading();
-            this.employeeListSubject.next(axiosResponse.data);
+            this.employeeListSubject.next(response.data);
         });
     };
 

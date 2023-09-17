@@ -1,5 +1,5 @@
 import {appService} from "../../../../services/app.service";
-import {useEffect} from "react";
+import {useCallback, useEffect} from "react";
 import {useFieldArray, useForm} from 'react-hook-form'
 import {Employee} from "../../types";
 import {Button} from "@mui/material";
@@ -29,31 +29,32 @@ const HookForm = () => {
         }else{
             reset(helperService.getBlankEmployee());
         }
-        appService.setPageTitle(`${isEditing ? 'Edit ' : 'Add'} React Hook Form`);
+        appService.setPageTitle(`${isEditing ? 'Edit ' : 'Add'} React Hook Form`);        
     },[id]);
 
-    const populateForm = (employeeId: number) => {
+    const populateForm = useCallback((employeeId: number) => {
         employeeService.getEmployee(employeeId).subscribe(employee => {
-            employee.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === '' ? null : address.apartmentNumber);
+            employee.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === 0 ? '' : address.apartmentNumber);
             reset(employee)
         })
-    }
-    const submitForm = (values:Employee) => {
+    },[employeeService])
+
+    const submitForm = useCallback((values:Employee) => {
         values.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === '' ? 0 : address.apartmentNumber);
-        if(!id){
+        if(!!id){
             helperService.updateEmployee(values, navigate);
         }else{
             helperService.addEmployee(values, navigate);
-        }
-    }
+        }        
+    },[helperService])
 
-    const addAddress = () => {
+    const addAddress = useCallback(() => {
         append( helperService.getBlankAddress());
-    }
+    },[helperService]);
 
-    const removeAddress = (index: number) => {
+    const removeAddress = useCallback((index: number) => {
         remove(index);
-    }
+    },[])
 
     return (        
         <form onSubmit={handleSubmit(submitForm)}>

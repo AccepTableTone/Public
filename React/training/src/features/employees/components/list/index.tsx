@@ -9,28 +9,33 @@ import {toastService} from "../../../../services/toast.service";
 const EmployeeList = () => {
     const employeeList = useObservable(() => employeeService.employeeList$, [])
     const selectedEmployee = useObservable(() => employeeService.selectedEmployee$, null)
+    
+    const resetEmployeeList = () => {
+        employeeService.selectEmployee(null);
+        employeeService.getEmployees();
+    };
     const deleteEmployee = () => {
-        // @ts-ignore
-        employeeService.deleteEmployee(selectedEmployee.id).subscribe(successful => {
-            if(successful){
-                toastService.success("Employee successfully deleted.");
-                employeeService.selectEmployee(null);
-                employeeService.getEmployees();
-            }
-        })
+        if(!!selectedEmployee?.id){
+            employeeService.deleteEmployee(selectedEmployee.id).subscribe(successful => {
+                if(successful){
+                    toastService.success("Employee successfully deleted.");
+                    resetEmployeeList();
+                }
+            })
+        }
     }
+
 
     useEffect(() => {
         appService.setPageTitle('Employee List');
-        employeeService.selectEmployee(null);
-        employeeService.getEmployees();
+        resetEmployeeList();
     },[]);
 
     return (
-        <div>
+        <>
             <EmployeeTable employees={employeeList} selectedEmployee={selectedEmployee}/>
             <EmployeeActions  selectedEmployee={selectedEmployee} deleteEmployee={deleteEmployee}/>
-        </div>
+        </>
     );
 }
 

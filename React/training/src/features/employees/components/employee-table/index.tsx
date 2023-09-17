@@ -6,11 +6,30 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React from "react";
+import React, { useMemo } from "react";
 import {employeeService} from "../../services/employee.service";
 
 const EmployeeTable: React.FC<{ employees: Employee[], selectedEmployee: Employee | null }> = ({employees, selectedEmployee}) => {
     const selectEmployee = (employee: Employee) => employeeService.selectEmployee(employee)
+
+    const employeeList = useMemo(() => {
+        return employees.map((employee) => (
+            <TableRow
+                onClick={() => selectEmployee(employee)}
+                selected={selectedEmployee?.id === employee.id}
+                key={employee.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                className='table-row'
+            >
+                <TableCell component="th" scope="row">
+                    {employee.firstName}
+                </TableCell>
+                <TableCell>{employee.lastName}</TableCell>
+                <TableCell>{employee.email}</TableCell>
+                <TableCell>{employee.phoneNumber}</TableCell>
+            </TableRow>
+        ))
+    }, [employees, selectedEmployee]);
 
     return (
         <div className='table-container'>
@@ -25,22 +44,7 @@ const EmployeeTable: React.FC<{ employees: Employee[], selectedEmployee: Employe
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {employees.map((employee) => (
-                            <TableRow
-                                onClick={() => selectEmployee(employee)}
-                                selected={selectedEmployee?.id === employee.id}
-                                key={employee.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                className='table-row'
-                            >
-                                <TableCell component="th" scope="row">
-                                    {employee.firstName}
-                                </TableCell>
-                                <TableCell>{employee.lastName}</TableCell>
-                                <TableCell>{employee.email}</TableCell>
-                                <TableCell>{employee.phoneNumber}</TableCell>
-                            </TableRow>
-                        ))}
+                        {employeeList}
                     </TableBody>
                 </Table>
             </TableContainer>

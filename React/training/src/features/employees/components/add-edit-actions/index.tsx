@@ -1,4 +1,5 @@
 import {Button, Stack} from "@mui/material";
+import React from "react";
 import {Link} from "react-router-dom";
 
 const AddEditActions = () => {
@@ -17,4 +18,4 @@ const AddEditActions = () => {
             </Stack>);
 }
 
-export default AddEditActions;
+export default React.memo(AddEditActions);

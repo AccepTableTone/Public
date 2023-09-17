@@ -1,16 +1,22 @@
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import React from "react";
-import {NavLink} from "react-router-dom";
+import React, { useCallback } from "react";
+import {NavLink, useLocation} from "react-router-dom";
 
 const TopNavMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const { pathname } = useLocation();
+    
+    const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
+    },[]);
+    const handleClose = useCallback(() => {
         setAnchorEl(null);
-    };
+    },[]);
+
+    const emloyeeListPath = "/employees";
+    const formikFormPath = "/formik-form";
+    const hookFormPath = "/hook-form";
 
     return(
         <div>
@@ -32,9 +38,9 @@ const TopNavMenu = () => {
                 }}
                 className= 'top-nav-menu'
             >
-                <MenuItem onClick={handleClose} component={NavLink} to="/employees">Employee List</MenuItem>
-                <MenuItem onClick={handleClose} component={NavLink} to="/formik-form">Add Employee with Formik</MenuItem>
-                <MenuItem onClick={handleClose} component={NavLink} to="/hook-form">Add Employee with React Hook Form</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={emloyeeListPath} disabled={pathname === emloyeeListPath}>Employee List</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={formikFormPath} disabled={pathname === formikFormPath}>Add Employee with Formik</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={hookFormPath} disabled={pathname === hookFormPath}>Add Employee with React Hook Form</MenuItem>
             </Menu>
         </div>
     )

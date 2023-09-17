@@ -1,5 +1,5 @@
 import {appService} from "../../../../services/app.service";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {ErrorMessage, FieldArray, Form, Formik} from "formik";
 import { Button, TextField} from "@mui/material";
 import {useParams, useNavigate} from "react-router-dom";
@@ -26,39 +26,41 @@ const FormikForm = () => {
         appService.setPageTitle(`${isEditing ? 'Edit ' : 'Add'} Formik Employee Form`);
     },[id]);
 
-    const populateForm = (employeeId: number) => {
+    const populateForm = useCallback((employeeId: number) => {
         employeeService.getEmployee(employeeId).subscribe(employee => {
-            employee.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === 0 ? null : address.apartmentNumber);
+            employee.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === 0 ? '' : address.apartmentNumber);
             setFormValues(employee);
         })
-    }
+    },[employeeService])
 
-    const submitForm = (values : Employee) => {
-        values.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === null ? 0 : address.apartmentNumber);
+    const submitForm = useCallback((values : Employee) => {
+        values.addresses?.forEach(address => address.apartmentNumber = address.apartmentNumber === '' ? 0 : address.apartmentNumber);
         if(!!id){
             helperService.updateEmployee(values, navigate);
         }else{
             helperService.addEmployee(values, navigate);
         }
-    };
+    },[]);
 
-    const addAddress = (values: Employee) => {
+    const addAddress = useCallback((values: Employee) => {
         setFormValues({
             ...values,
             addresses: [...values.addresses || [], helperService.getBlankAddress()]
         })
-    }
+    },[])
 
-    const removeAddress = (index: number, values: Employee) => {
+    const removeAddress = useCallback((index: number, values: Employee) => {
         const newAddresses = [...values.addresses || []];
         newAddresses?.splice(index, 1);
         setFormValues({
             ...values,
             addresses: newAddresses
         })
-    }
+    },[])
 
-    const renderError = (message:string) => <div className='flex-row error-div'><WarningIcon/><div className={'error-message'}>{message}</div></div>;
+    const renderError = (message:string) => {
+        return (<div className='flex-row error-div'><WarningIcon/><div className={'error-message'}>{message}</div></div>)
+    };
 
     return (
         <Formik

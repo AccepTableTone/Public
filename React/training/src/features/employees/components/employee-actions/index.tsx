@@ -1,19 +1,21 @@
 import {employeeService} from "../../services/employee.service";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack} from "@mui/material";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {Employee} from "../../types";
 import {Link} from "react-router-dom";
 
 
 const EmployeeActions: React.FC<{ selectedEmployee: Employee | null, deleteEmployee: ()=> void }>  = ({selectedEmployee, deleteEmployee}) => {
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-    const handleCloseDialog = () => {
+    const handleCloseDialog = useCallback(() => {
         setShowConfirmDialog(false);
-    };
+    },[]);
+
     const deletSelectedEmployee = () => {
         deleteEmployee();
         handleCloseDialog();
-    }
+    };
+    
     return (
         <div className='action-container'>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
@@ -62,4 +64,4 @@ const EmployeeActions: React.FC<{ selectedEmployee: Employee | null, deleteEmplo
     );
 };
 
-export default EmployeeActions;
+export default React.memo(EmployeeActions);
